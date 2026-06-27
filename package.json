@@ -1,0 +1,16 @@
+{
+  "name": "smart-grocery-planner",
+  "version": "1.0.0",
+  "description": "Smart Grocery Planner Agent",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2"
+  }
+}
