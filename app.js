@@ -877,11 +877,15 @@ function registerEventListeners() {
 
   if (signinBtn) {
     signinBtn.addEventListener('click', () => {
-      if (!supabase) {
-        showToast('⚠️ Authentication database is not configured in Vercel settings.');
-        return;
-      }
+      // Always open the modal — if Supabase isn't ready, show an error inside it
       if (authModal) authModal.classList.remove('hidden');
+      if (!supabase) {
+        const loginErr = document.getElementById('login-error-msg');
+        if (loginErr) {
+          loginErr.textContent = '⚠️ Auth service not configured. Please check Vercel environment variables.';
+          loginErr.classList.add('visible');
+        }
+      }
     });
   }
 
@@ -942,6 +946,10 @@ function registerEventListeners() {
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (!supabase) {
+        showAuthError('login-error-msg', '⚠️ Authentication service is not configured. Please add Supabase environment variables in Vercel.');
+        return;
+      }
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value.trim();
       const submitBtn = loginForm.querySelector('[type="submit"]');
