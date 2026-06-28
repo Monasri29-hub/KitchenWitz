@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Stylesheet -->
-  <script type="module" crossorigin src="/assets/index-Bf7HFegZ.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-B8JREB2H.css">
+  <script type="module" crossorigin src="/assets/index-D1HEysIL.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BwVe-WEE.css">
 </head>
 <body>
 
@@ -722,9 +722,15 @@
         </div>
       </div>
 
-      <div class="modal-footer profile-modal-footer" style="padding: 1rem 1.5rem 1.5rem; justify-content: space-between; align-items: center;">
-        <button id="grocery-modal-clear-btn" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #f87171; font-weight: 700; padding: 0.55rem 1rem; border-radius: 10px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">🗑️ Clear Checked</button>
-        <button id="grocery-modal-close-footer-btn" class="primary-btn profile-save-btn" style="padding: 0.55rem 1.5rem !important;">Close</button>
+      <div class="modal-footer profile-modal-footer" style="padding: 1rem 1.5rem 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between; align-items: center;">
+        <button id="grocery-modal-clear-btn" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #f87171; font-weight: 700; padding: 0.55rem 0.85rem; border-radius: 10px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;">🗑️ Clear Checked</button>
+        
+        <div style="display: flex; gap: 0.4rem;">
+          <button id="grocery-modal-copy-btn" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #ffffff; padding: 0.55rem 0.85rem; border-radius: 10px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.35rem; transition: all 0.2s;">📋 Copy</button>
+          <button id="grocery-modal-export-btn" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #ffffff; padding: 0.55rem 0.85rem; border-radius: 10px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.35rem; transition: all 0.2s;">📥 Export</button>
+        </div>
+
+        <button id="grocery-modal-close-footer-btn" class="primary-btn profile-save-btn" style="padding: 0.55rem 1.25rem !important; margin: 0;">Close</button>
       </div>
     </div>
   </div>

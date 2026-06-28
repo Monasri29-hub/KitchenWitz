@@ -1052,8 +1052,7 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
 }
 
 .shopping-item.checked {
-  color: var(--text-muted);
-  text-decoration: line-through;
+  color: #ffffff;
   text-shadow: 0 0 8px rgba(132, 204, 22, 0.45);
 }
 
@@ -1693,8 +1692,7 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
 }
 
 .shopping-item.checked {
-  opacity: 0.55;
-  transform: scale(0.98) translateX(4px);
+  opacity: 1;
 }
 
 /* ==========================================================================
@@ -3755,4 +3753,31 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
   background: rgba(132, 204, 22, 0.12);
   color: var(--accent-green);
   padding-left: 1.4rem;
+}
+
+/* ── Custom box styling for shopping list items (both main list & modal list) ── */
+.shopping-list-items li {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.75rem;
+  margin-bottom: 0.4rem;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-radius: 10px;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shopping-list-items li.checked {
+  background: rgba(132, 204, 22, 0.15) !important;
+  border-color: #84cc16 !important;
+  box-shadow: 0 0 12px rgba(132, 204, 22, 0.25);
+  opacity: 1 !important;
+}
+
+.shopping-list-items li.checked label,
+.shopping-list-items li.checked span {
+  text-decoration: none !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
 }

@@ -393,10 +393,12 @@ function registerEventListeners() {
       }
       
       // Filter matching ingredients and ignore duplicates in pantry
-      currentSuggestions = SUGGESTED_INGREDIENTS.filter(item => 
-        item.toLowerCase().includes(query) &&
-        !pantryList.some(p => p.toLowerCase() === item.toLowerCase())
-      ).slice(0, 5); // Limit to top 5 suggestions
+      const queryWords = query.split(/\s+/).filter(Boolean);
+      currentSuggestions = SUGGESTED_INGREDIENTS.filter(item => {
+        const itemNameLower = item.toLowerCase();
+        const matchesAny = queryWords.some(word => itemNameLower.includes(word));
+        return matchesAny && !pantryList.some(p => p.toLowerCase() === item.toLowerCase());
+      }).slice(0, 5); // Limit to top 5 suggestions
       
       if (currentSuggestions.length === 0) {
         suggestionsContainer.innerHTML = '';
@@ -1344,6 +1346,9 @@ function registerEventListeners() {
     });
   }
 
+  const grocCopyBtn = document.getElementById('grocery-modal-copy-btn');
+  const grocExportBtn = document.getElementById('grocery-modal-export-btn');
+
   if (grocClearBtn) {
     grocClearBtn.addEventListener('click', () => {
       customShoppingList = customShoppingList.filter(x => !x.checked);
@@ -1353,6 +1358,14 @@ function registerEventListeners() {
       renderShoppingList();
       showToast("🧹 Cleared checked items from list!");
     });
+  }
+
+  if (grocCopyBtn) {
+    grocCopyBtn.addEventListener('click', copyModalShoppingList);
+  }
+
+  if (grocExportBtn) {
+    grocExportBtn.addEventListener('click', exportModalShoppingList);
   }
 
   // Scroll to Favorites & History section
@@ -3119,20 +3132,8 @@ function renderModalGroceryList() {
   } else {
     combinedList.forEach((item, index) => {
       const li = document.createElement('li');
-      li.style.display = 'flex';
-      li.style.alignItems = 'center';
-      li.style.justifyContent = 'space-between';
-      li.style.padding = '0.55rem 0.75rem';
-      li.style.marginBottom = '0.4rem';
-      li.style.background = 'rgba(255,255,255,0.02)';
-      li.style.border = '1px solid rgba(255,255,255,0.04)';
-      li.style.borderRadius = '10px';
-      li.style.transition = 'background 0.22s, opacity 0.22s';
-      
       if (item.checked) {
         li.className = 'checked';
-        li.style.opacity = '0.6';
-        li.style.background = 'rgba(132,204,22,0.03)';
       }
 
       const checkLabel = document.createElement('label');
@@ -3148,13 +3149,6 @@ function renderModalGroceryList() {
       cb.addEventListener('change', () => {
         const isChecked = cb.checked;
         li.classList.toggle('checked', isChecked);
-        if (isChecked) {
-          li.style.opacity = '0.6';
-          li.style.background = 'rgba(132,204,22,0.03)';
-        } else {
-          li.style.opacity = '1';
-          li.style.background = 'rgba(255,255,255,0.02)';
-        }
         
         // Update states
         customShoppingList = customShoppingList.map(x => {
@@ -3178,38 +3172,90 @@ function renderModalGroceryList() {
       const spanName = document.createElement('span');
       spanName.textContent = item.name;
       spanName.style.fontSize = '0.85rem';
-      spanName.style.color = item.checked ? 'var(--text-muted)' : '#ffffff';
-      if (item.checked) {
-        spanName.style.textDecoration = 'line-through';
-      }
+      spanName.style.color = '#ffffff';
 
       checkLabel.appendChild(cb);
       checkLabel.appendChild(spanName);
       li.appendChild(checkLabel);
-
-      // Trash delete button for custom items
-      const isCustom = customShoppingList.some(x => x.name.toLowerCase() === item.name.toLowerCase());
-      if (isCustom) {
-        const delBtn = document.createElement('button');
-        delBtn.innerHTML = '🗑️';
-        delBtn.style.background = 'none';
-        delBtn.style.border = 'none';
-        delBtn.style.cursor = 'pointer';
-        delBtn.style.fontSize = '0.85rem';
-        delBtn.style.opacity = '0.5';
-        delBtn.style.transition = 'opacity 0.2s';
-        delBtn.onmouseover = () => delBtn.style.opacity = '1';
-        delBtn.onmouseout = () => delBtn.style.opacity = '0.5';
-        delBtn.addEventListener('click', () => {
-          customShoppingList = customShoppingList.filter(x => x.name.toLowerCase() !== item.name.toLowerCase());
-          saveGroceryListToStorage();
-          renderModalGroceryList();
-          renderShoppingList();
-        });
-        li.appendChild(delBtn);
-      }
-
       container.appendChild(li);
     });
+  }
+}
+
+/* Copy unchecked items from the grocery list modal */
+function copyModalShoppingList() {
+  const items = [];
+  const seen = new Set();
+  
+  [...lastMissingIngredients, ...customShoppingList].forEach(item => {
+    if (item && item.name && !item.checked) {
+      const lower = item.name.toLowerCase();
+      if (!seen.has(lower)) {
+        seen.add(lower);
+        items.push(`- [ ] ${item.name}`);
+      }
+    }
+  });
+
+  const btn = document.getElementById('grocery-modal-copy-btn');
+  if (items.length === 0) {
+    if (btn) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '⚠️ Empty!';
+      setTimeout(() => btn.innerHTML = originalText, 2000);
+    }
+    return;
+  }
+
+  const text = `KitchenWhiz - Unpurchased Items:\n${items.join('\n')}`;
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '✓ Copied!';
+      setTimeout(() => btn.innerHTML = originalText, 2000);
+    }
+  });
+}
+
+/* Export unchecked items from the grocery list modal as txt file */
+function exportModalShoppingList() {
+  const items = [];
+  const seen = new Set();
+  
+  [...lastMissingIngredients, ...customShoppingList].forEach(item => {
+    if (item && item.name && !item.checked) {
+      const lower = item.name.toLowerCase();
+      if (!seen.has(lower)) {
+        seen.add(lower);
+        items.push(`- [ ] ${item.name}`);
+      }
+    }
+  });
+
+  const btn = document.getElementById('grocery-modal-export-btn');
+  if (items.length === 0) {
+    if (btn) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '⚠️ Empty!';
+      setTimeout(() => btn.innerHTML = originalText, 2000);
+    }
+    return;
+  }
+
+  const text = `KitchenWhiz - Pending Shopping Items:\n${items.join('\n')}`;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'shopping-list.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  if (btn) {
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '✓ Exported!';
+    setTimeout(() => btn.innerHTML = originalText, 2000);
   }
 }
