@@ -1,6 +1,7 @@
 {
   "name": "smart-grocery-planner",
   "version": "1.0.0",
+  "type": "module",
   "description": "Smart Grocery Planner Agent",
   "scripts": {
     "dev": "vite --host",
