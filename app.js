@@ -3,9 +3,17 @@ import { createClient } from '@supabase/supabase-js';
 /* ==========================================================================
    Supabase Client
    ========================================================================== */
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+let supabase = null;
+
+if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+  try {
+    supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } catch (e) {
+    console.error('Failed to initialize Supabase client:', e);
+  }
+}
 
 /* ==========================================================================
    State & Constants
@@ -271,12 +279,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   initBackgroundParticles();
 
   // Restore existing Supabase session (handles page refresh without re-login)
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session?.user) {
-    currentSupabaseUser = session.user;
-    await loadUserData();
+  if (supabase) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        currentSupabaseUser = session.user;
+        await loadUserData();
+      } else {
+        loadPantryFromStorage(); // Load guest pantry from localStorage
+      }
+    } catch (err) {
+      console.warn('Session restoration skipped:', err.message);
+      loadPantryFromStorage();
+    }
   } else {
-    loadPantryFromStorage(); // Load guest pantry from localStorage
+    loadPantryFromStorage();
   }
 
   updateAuthUI();
@@ -286,24 +303,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   registerEventListeners();
 
   // Listen for auth state changes (sign-in, sign-out, token refresh)
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    if (session?.user) {
-      currentSupabaseUser = session.user;
-      await loadUserData();
-      updateAuthUI();
-      renderFavoritesGrid();
-      renderHistoryGrid();
-    } else {
-      currentSupabaseUser = null;
-      pantryList = [];
-      favoritesList = [];
-      historyList = [];
-      loadPantryFromStorage();
-      updateAuthUI();
-      renderFavoritesGrid();
-      renderHistoryGrid();
-    }
-  });
+  if (supabase) {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        currentSupabaseUser = session.user;
+        await loadUserData();
+        updateAuthUI();
+        renderFavoritesGrid();
+        renderHistoryGrid();
+      } else {
+        currentSupabaseUser = null;
+        pantryList = [];
+        favoritesList = [];
+        historyList = [];
+        loadPantryFromStorage();
+        updateAuthUI();
+        renderFavoritesGrid();
+        renderHistoryGrid();
+      }
+    });
+  }
 });
 
 /* ==========================================================================
@@ -858,6 +877,10 @@ function registerEventListeners() {
 
   if (signinBtn) {
     signinBtn.addEventListener('click', () => {
+      if (!supabase) {
+        showToast('⚠️ Authentication database is not configured in Vercel settings.');
+        return;
+      }
       if (authModal) authModal.classList.remove('hidden');
     });
   }
