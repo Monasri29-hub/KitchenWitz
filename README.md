@@ -112,13 +112,18 @@ npm run dev
 ```
 Open **[http://localhost:5173/](http://localhost:5173/)** in your browser.
 
-### 6. Build for Production
-```bash
-npm run build
-```
-Compiled assets will be written to the `dist/` directory.
+### 6. Build & Deploy to Vercel
+KitchenWhiz is configured for instant deployment on Vercel using serverless backend support:
+*   **CORS-Free Serverless Proxy:** The `/api/suggest-recipes` and `/api/chatbot` endpoints automatically build into Vercel Serverless Functions. They securely fetch completions from the Groq/Gemini APIs without leaking keys to the client browser.
+*   **Setting Env Variables:** Ensure `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and `VITE_GROCERY_AGENT_KEY` are configured in your Vercel Project Settings under **Environment Variables** (scoped to Production/Preview).
+*   **CI/CD Deployment:** Simply push commits to your linked GitHub repository's `main` branch to trigger an automatic redeploy on Vercel.
 
 ---
 
 ## 🛡️ License
 Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## ✍️ Author
+*   **Monasri Kundeti** - [@Monasri29-hub](https://github.com/Monasri29-hub)
