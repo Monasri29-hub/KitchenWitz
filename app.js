@@ -2136,54 +2136,26 @@ Ensure your output is strictly valid JSON only. Do not wrap the JSON output in m
 
   let responseData;
   
-  if (isGroq) {
-    const url = 'https://api.groq.com/openai/v1/chat/completions';
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        messages: [{ role: 'user', content: prompt }],
-        response_format: { type: 'json_object' }
-      })
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Groq API error! Status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    const contentText = data.choices[0].message.content.trim();
-    responseData = parseResponseJSON(contentText);
-  } else {
-    // Gemini
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: prompt }]
-        }],
-        generationConfig: {
-          responseMimeType: "application/json"
-        }
-      })
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Gemini API error! Status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    const text = data.candidates[0].content.parts[0].text.trim();
-    responseData = parseResponseJSON(text);
+  const response = await fetch('/api/suggest-recipes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ prompt, apiKey })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Serverless proxy error! Status: ${response.status}`);
   }
+
+  const data = await response.json();
+  let contentText;
+  if (data.choices) {
+    contentText = data.choices[0].message.content.trim();
+  } else {
+    contentText = data.candidates[0].content.parts[0].text.trim();
+  }
+  responseData = parseResponseJSON(contentText);
   
   currentRecipes = responseData.recipes;
   await addToHistory(responseData.recipes);
@@ -2983,37 +2955,21 @@ Make sure to replace "item1, item2" with the actual comma-separated ingredient n
 
 User Query: ${userQuery}`;
 
-  const isGroq = apiKey.startsWith('gsk_');
-  
   try {
-    if (isGroq) {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          messages: [{ role: 'user', content: systemPrompt }],
-          temperature: 0.7,
-          max_tokens: 250
-        })
-      });
-      if (!response.ok) throw new Error('Groq API Error');
-      const data = await response.json();
+    const response = await fetch('/api/chatbot', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ systemPrompt, userQuery, apiKey })
+    });
+
+    if (!response.ok) throw new Error('Chatbot Proxy Error');
+    const data = await response.json();
+    
+    if (data.choices) {
       return data.choices[0].message.content;
     } else {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: systemPrompt }] }],
-          generationConfig: { maxOutputTokens: 250, temperature: 0.7 }
-        })
-      });
-      if (!response.ok) throw new Error('Gemini API Error');
-      const data = await response.json();
       return data.candidates[0].content.parts[0].text;
     }
   } catch (err) {
