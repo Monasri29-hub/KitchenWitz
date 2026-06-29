@@ -3901,6 +3901,59 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
     padding: 0.9rem 1.25rem !important;
     font-size: 0.95rem !important;
   }
+
+  /* 8. Prevent Horizontal Scrolling & Shifting */
+  body, html {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+
+  .workspace {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    padding: 0 !important;
+  }
+
+  .panel-body {
+    padding: 1rem !important; /* Save 24px of horizontal space on mobile */
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 9. Difficulty Filter Mobile Layout Stacking */
+  .filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+    padding: 0.85rem 1rem !important;
+    text-align: center !important;
+    margin-bottom: 1.25rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .filter-label {
+    font-size: 0.78rem !important;
+    margin-bottom: 0.15rem !important;
+    text-align: center !important;
+    display: block !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .filter-options {
+    display: flex !important;
+    gap: 0.4rem !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .filter-btn {
+    flex: 1 !important;
+    padding: 0.45rem 0.25rem !important;
+    font-size: 0.75rem !important;
+    text-align: center !important;
+  }
 }
 
 /* extra small screen layout adjustments */
@@ -3929,6 +3982,7 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
   #history-grid {
     max-height: 400px !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important; /* Lock horizontal layout */
     padding-right: 0.5rem !important;
     margin-bottom: 0.5rem !important;
   }
@@ -3964,5 +4018,6 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
     border-radius: 4px !important;
   }
 }
+
 
 
