@@ -3787,11 +3787,6 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
    Mobile-Responsive Enhancements (max-width: 600px)
    ========================================================================== */
 @media (max-width: 600px) {
-  /* 0. Main App Container Compactness */
-  .app-container {
-    padding: 0.75rem 0.5rem !important;
-  }
-
   /* 1. Header Bar Compactness */
   .top-bar {
     padding: 0.75rem 1rem;
@@ -4084,6 +4079,72 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
     border-radius: 4px !important;
   }
 }
+
+/* ==========================================================================
+   Tablet & iPad View Optimizations (601px to 1024px)
+   ========================================================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+  /* 1. Page Margin & Flex Padding adjustments */
+  .app-container {
+    padding: 1.25rem !important;
+  }
+
+  .workspace {
+    gap: 1.25rem !important;
+  }
+
+  /* Centered, readable panels on tablets (prevents stretching too wide) */
+  .panel {
+    max-width: 720px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+  }
+
+  /* 2. Floating Chatbot on Tablets instead of full screen */
+  .chatbot-overlay-panel {
+    width: 380px !important;
+    max-width: 380px !important;
+    right: 1.5rem !important;
+    left: auto !important;
+    top: 5.5rem !important;
+    height: 520px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(132, 204, 22, 0.2) !important;
+    border-radius: 20px !important;
+  }
+
+  /* 3. Balanced 2-Column Recipe Grids for Tablet Viewports */
+  .recipes-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+
+  /* 4. Profile Stats and Preferences spacing */
+  .profile-stats-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+
+  .pref-grid {
+    grid-template-columns: 1fr 1fr !important; /* Keep 2 cols on tablets */
+    gap: 0.75rem !important;
+  }
+
+  /* 5. Splash Screen scaling on iPad */
+  .splash-title {
+    font-size: 3.2rem !important;
+    letter-spacing: 0.08em !important;
+  }
+  
+  .splash-subtitle {
+    font-size: 1rem !important;
+  }
+
+  /* 6. Modals on Tablet Widths */
+  .modal-card {
+    max-width: 520px !important;
+  }
+}
+
 
 
 
