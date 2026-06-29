@@ -3954,7 +3954,41 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
     font-size: 0.75rem !important;
     text-align: center !important;
   }
+
+  /* 10. Shopping List Header Stacking on Mobile */
+  .shopping-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .shopping-header h3 {
+    width: 100% !important;
+    font-size: 1.05rem !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+  }
+
+  .shopping-actions {
+    width: 100% !important;
+    display: flex !important;
+    gap: 0.5rem !important;
+  }
+
+  .shopping-actions button,
+  .shopping-actions .icon-btn-small {
+    flex: 1 !important;
+    justify-content: center !important;
+    padding: 0.45rem !important;
+    font-size: 0.78rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.3rem !important;
+  }
 }
+
 
 /* extra small screen layout adjustments */
 @media (max-width: 400px) {
