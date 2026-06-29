@@ -3919,3 +3919,50 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
   }
 }
 
+/* ==========================================================================
+   Mobile-View Scroll Enhancements (max-width: 850px)
+   ========================================================================== */
+@media (max-width: 850px) {
+  /* Set scrolling for recipes, favorites, history grids to prevent cut-off UI */
+  #recipes-grid,
+  #favorites-grid,
+  #history-grid {
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    padding-right: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Set scrolling for shopping list card container */
+  .shopping-card {
+    max-height: 280px !important;
+    overflow-y: auto !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Custom scrollbar styling for mobile elements */
+  #recipes-grid::-webkit-scrollbar,
+  #favorites-grid::-webkit-scrollbar,
+  #history-grid::-webkit-scrollbar,
+  .shopping-card::-webkit-scrollbar {
+    width: 6px !important;
+  }
+
+  #recipes-grid::-webkit-scrollbar-thumb,
+  #favorites-grid::-webkit-scrollbar-thumb,
+  #history-grid::-webkit-scrollbar-thumb,
+  .shopping-card::-webkit-scrollbar-thumb {
+    background: rgba(132, 204, 22, 0.35) !important;
+    border-radius: 4px !important;
+  }
+  
+  #recipes-grid::-webkit-scrollbar-track,
+  #favorites-grid::-webkit-scrollbar-track,
+  #history-grid::-webkit-scrollbar-track,
+  .shopping-card::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 4px !important;
+  }
+}
+
+
