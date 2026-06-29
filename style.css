@@ -3781,3 +3781,141 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
   color: #ffffff !important;
   opacity: 1 !important;
 }
+
+/* ==========================================================================
+   Mobile-Responsive Enhancements (max-width: 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  /* 1. Header Bar Compactness */
+  .top-bar {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+  }
+  
+  .brand {
+    gap: 0.5rem;
+  }
+  
+  .logo-icon {
+    font-size: 1.8rem;
+  }
+  
+  .logo-text h1 {
+    font-size: 1.3rem;
+  }
+  
+  .logo-text .subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+    gap: 0.50rem;
+  }
+
+  /* Hide textual button labels to fit icon buttons in a single row */
+  .top-bar .icon-btn .btn-text {
+    display: none !important;
+  }
+
+  .top-bar .icon-btn {
+    padding: 0.55rem 0.75rem !important;
+    min-width: 40px;
+    justify-content: center;
+  }
+
+  /* 2. Modals Overflow Scrolling */
+  .modal-overlay {
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+    padding: 1.5rem 1rem !important;
+  }
+
+  .modal-card {
+    margin: 1rem auto !important;
+    max-height: none !important;
+    width: 100% !important;
+  }
+
+  /* 3. Stat Cards & Dietary Preference Grid */
+  .profile-stats-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    padding: 1rem 1rem 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .stat-box {
+    padding: 0.75rem 0.25rem !important;
+  }
+
+  .stat-box .stat-val {
+    font-size: 1.1rem !important;
+  }
+
+  .stat-box .stat-lbl {
+    font-size: 0.65rem !important;
+  }
+
+  .pref-grid {
+    grid-template-columns: 1fr !important; /* Stack preferences vertically */
+    gap: 0.5rem !important;
+  }
+
+  /* 4. Chatbot Overlay Mobile Adaptation */
+  .chatbot-overlay-panel {
+    top: 1rem !important;
+    bottom: 1rem !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: calc(100vh - 2rem) !important;
+    border-radius: 20px !important;
+  }
+
+  /* 5. Nutrition Grid (2x2 Layout instead of squashed 4x1) */
+  .sp-nutrition-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  /* 6. Recipe Detail View Card height on mobile */
+  .recipe-detail-view .detail-modal-card {
+    max-height: 92vh !important;
+    border-radius: 20px !important;
+  }
+
+  .recipe-detail-view .detail-modal-body {
+    padding: 1rem !important;
+  }
+
+  /* 7. Action Button Glow Spacing */
+  .action-btn {
+    padding: 0.9rem 1.25rem !important;
+    font-size: 0.95rem !important;
+  }
+}
+
+/* extra small screen layout adjustments */
+@media (max-width: 400px) {
+  .modal-overlay {
+    padding: 0.5rem !important;
+  }
+
+  .modal-card {
+    margin: 0.5rem auto !important;
+  }
+
+  .profile-stats-grid {
+    grid-template-columns: 1fr !important; /* Stack stats on extremely narrow screens */
+    gap: 0.4rem !important;
+  }
+}
+
