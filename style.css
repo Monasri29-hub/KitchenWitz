@@ -3787,6 +3787,11 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
    Mobile-Responsive Enhancements (max-width: 600px)
    ========================================================================== */
 @media (max-width: 600px) {
+  /* 0. Main App Container Compactness */
+  .app-container {
+    padding: 0.75rem 0.5rem !important;
+  }
+
   /* 1. Header Bar Compactness */
   .top-bar {
     padding: 0.75rem 1rem;
