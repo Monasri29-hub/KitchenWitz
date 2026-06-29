@@ -1704,6 +1704,7 @@ h1, h2, h3, h4, h5, h6, .splash-title, .brand h1, .panel-header h2, .detail-titl
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh; /* dynamic height for mobile address bars */
   background-color: #070708;
   z-index: 99999;
   display: flex;
